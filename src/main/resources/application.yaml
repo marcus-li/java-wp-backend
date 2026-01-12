@@ -1,0 +1,43 @@
+logging:
+  level:
+    # Shows the exact SQL query being sent to the remote DB
+    org.hibernate.SQL: DEBUG
+    # Shows the actual values and types being extracted from the Result Set
+    org.hibernate.orm.jdbc.bind: TRACE
+    # Shows how Hibernate is attempting to map columns to your Java Entity
+    org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
+
+spring:
+  application:
+    name: backend
+
+  datasource:
+    # Syntax: ${ENV_VAR_NAME:fallback_value}
+    url: jdbc:postgresql://${DB_HOST:129.213.145.177}:${DB_PORT:5432}/${DB_NAME:algo}
+    username: ${DB_USERNAME:algo_admin}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      # CRITICAL: 'none' ensures Hibernate makes zero changes to your tables.
+      # 'validate' will check if your Java entity matches the table and crash if they don't.
+      ddl-auto: none
+
+    # Optional: Set to false to prevent Hibernate from even trying to generate DDL
+    generate-ddl: false
+
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        highlight_sql: true
+        # Ensures Hibernate doesn't wrap column names in quotes that cause case-sensitivity issues
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+
+  # High performance for Java 25
+  threads:
+    virtual:
+      enabled: true
