@@ -6,15 +6,16 @@ on:
 jobs:
   login-test:
     runs-on: ubuntu-latest
-
+    env:
+      OCI_CLI_USER: ${{ vars.OCIR_USERNAME }}
+      OCI_CLI_AUTH_TOKEN: ${{ secrets.OCIR_AUTH_TOKEN }}
+ 
+      OCI_CLI_REGION: iad 
     steps:
       - name: Log in # Step name changed
         # This step logs in to Docker using the provided secrets.
         uses: oracle-actions/login-ocir@v1.3.0 
-        with:
-          registry: ${{ secrets.OCIR_REGISTRY_URL }}
-          username: ${{ secrets.OCIR_USERNAME }}
-          password: ${{ secrets.OCIR_AUTH_TOKEN }}
+
 
       - name: Check Docker login status
         run: |
