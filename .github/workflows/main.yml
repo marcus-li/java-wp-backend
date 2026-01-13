@@ -18,7 +18,7 @@ jobs:
         uses: oracle-actions/login-ocir@v1.3.0
         id: login-ocir
         with:
-          auth_token: ${{ secrets.OCI_AUTH_TOKEN }}
+          auth_token: ${{ secrets.OCIR_AUTH_TOKEN }}
 
 
       - name: Check Docker login status
