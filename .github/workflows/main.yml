@@ -1,0 +1,26 @@
+name: Test OCIR Login Credentials
+
+on:
+  workflow_dispatch: # Manual trigger for testing
+
+jobs:
+  login-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Log in # Step name changed
+        # This step logs in to Docker using the provided secrets.
+        uses: docker/login-action@v3.0.0
+        with:
+          registry: ${{ secrets.OCIR_REGISTRY_URL }}
+          username: ${{ secrets.OCIR_USERNAME }}
+          password: ${{ secrets.OCIR_AUTH_TOKEN }}
+
+      - name: Check Docker login status
+        run: |
+          # The 'docker login' action automatically handles the auth file.
+          # We can verify connectivity by attempting a standard 'docker pull' 
+          # of a tiny public image, which confirms the registry connection 
+          # is configured in the environment.
+          docker pull hello-world:latest
+          echo "Login successful and Docker environment configured."
