@@ -6,6 +6,7 @@ on:
 jobs:
   login-test:
     runs-on: ubuntu-latest
+    environment: oracle vm secrets
     env:
       OCI_CLI_USER: ${{ vars.OCI_CLI_USER }}
       OCI_CLI_TENANCY: ${{ vars.OCI_CLI_TENANCY }}
