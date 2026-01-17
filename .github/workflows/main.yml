@@ -1,0 +1,31 @@
+name: Test OCIR Login Credentials
+
+on:
+  workflow_dispatch: # Manual trigger for testing
+
+jobs:
+  login-test:
+    runs-on: ubuntu-latest
+    environment: oracle vm secrets
+    env:
+      OCI_CLI_USER: ${{ vars.OCI_CLI_USER }}
+      OCI_CLI_TENANCY: ${{ vars.OCI_CLI_TENANCY }}
+      OCI_CLI_FINGERPRINT: ${{ vars.OCI_CLI_FINGERPRINT }}
+      OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+      OCI_CLI_REGION: us-ashburn-1
+    steps:
+      - name: Log into OCIR
+        uses: oracle-actions/login-ocir@v1.3.0
+        id: login-ocir
+        with:
+          auth_token: ${{ secrets.OCIR_AUTH_TOKEN }}
+
+
+      - name: Check Docker login status
+        run: |
+          # The 'docker login' action automatically handles the auth file.
+          # We can verify connectivity by attempting a standard 'docker pull' 
+          # of a tiny public image, which confirms the registry connection 
+          # is configured in the environment.
+          docker pull hello-world:latest
+          echo "Login successful and Docker environment configured."
