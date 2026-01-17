@@ -1,3 +1,11 @@
+server:
+  port: 443
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: 2929please
+    key-store-type: PKCS12
+    key-alias: schwabapp
+
 logging:
   level:
     # Shows the exact SQL query being sent to the remote DB
@@ -41,3 +49,19 @@ spring:
   threads:
     virtual:
       enabled: true
+
+schwab:
+  api:
+    # Use ${ENV_VAR:default_value} syntax
+    # If SCHWAB_API_BASE_URL is not set, it defaults to the production URL
+    base-url: ${SCHWAB_API_BASE_URL:https://api.schwabapi.com}
+
+    # Sensitive credentials should not have defaults in the file
+    # This forces the app to crash if they aren't provided in the environment
+    client-id: ${SCHWAB_CLIENT_ID}
+    client-secret: ${SCHWAB_CLIENT_SECRET}
+    redirect-uri: https://127.0.0.1 #https://127.0.0.1:8443/auth/callback
+
+  token:
+    # Use a system path with a sensible local default for development
+    storage-path: ${SCHWAB_TOKEN_PATH:tokens/schwab.dat}
